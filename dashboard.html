@@ -1,0 +1,185 @@
+<html>
+    <head>
+
+        <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
+        <meta content="utf-8" http-equiv="encoding">
+
+        <!--Load the AJAX API-->
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="css/bootstrap.min.css" crossorigin="anonymous">
+
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="css/bootstrap-theme.min.css" crossorigin="anonymous">
+        <link href="../css/style.css" rel="stylesheet" media="screen, print">
+        <link href="../css/navcustom.css" rel="stylesheet">
+
+        <link rel="stylesheet" href="css/starter-template.css">
+
+
+
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="js/bootstrap.min.js" crossorigin="anonymous"></script>
+        <script>
+            var dataPop = [["Country", "Population"]];
+            var dataAr = [["Country", "Population"]];
+            var bubbleChart = [['Country', 'Rank', 'PercentageOfWorld', 'Country', 'Population']];
+            var comboChart = [['Machine', 'Total', 'Used', 'Available']];
+            google.charts.load('current', {'packages': ['corechart']});
+            $(document).ready(function () {
+                $("button").click(function () {
+                    var SendInfo = {"limit": 5, "sort": {"created_date": "desc"}};
+                    var dataString = JSON.stringify(SendInfo);
+
+                    //call customer
+                    $.ajax({
+                        url: 'http://api.masterdatanode.com/unix/memory/find/',
+                        type: 'post',
+                        data: dataString,
+                        headers: {
+                            "access_token": 'Zs0nTQB-ujOSV0KmEoPhBx2E6-Ab_GKO',
+                            "Content-Type": 'application/json'
+                        },
+                        dataType: 'json',
+                        success: function (data) {
+//                            console.info(JSON.stringify(data));
+//                            $("#test_div").html(JSON.stringify(data));
+//                            alert(JSON.stringify(data));
+                            var population = data['result'];
+//                            var myStringArray = ["Hello", "World"];
+                            var obj = {a: 1, b: 2};
+                            for (var key in population) {
+                                if (population.hasOwnProperty(key)) {
+                                    var val = population[key];
+                                    var date_time = val['created_date'];
+                                    var date = date_time.substr(0, date_time.indexOf(' ')); // "72"
+
+//                                    alert(JSON.stringify(val['Country']));
+                                    comboChart.push([val['machine'] + "|" + val['used_per']+ "|" + date, parseInt(val['total']), parseInt(val['used']), parseInt(val['available'])]);
+//                                    alert(JSON.stringify(dataPop));
+                                }
+                            }
+                            // Load the Visualization API and the corechart package.
+
+
+                            // Set a callback to run when the Google Visualization API is loaded.
+//                            google.charts.setOnLoadCallback(drawChart);
+//                            google.charts.setOnLoadCallback(drawBar);
+//                            google.charts.setOnLoadCallback(drawSeriesChart);
+//                            google.charts.setOnLoadCallback(drawColumnChart);
+
+//                            google.charts.setOnLoadCallback(drawDonutChart);
+//                            google.charts.setOnLoadCallback(draw3dChart);
+                            google.charts.setOnLoadCallback(drawComboChart);
+
+
+                        }
+                    });
+
+
+
+                });
+            });
+
+
+
+            // Callback that creates and populates a data table,
+
+
+            function drawComboChart() {
+                // Some raw data (not necessarily accurate)
+//                alert(comboChart);
+                var data = google.visualization.arrayToDataTable(comboChart);
+
+                var options = {
+                    title: 'Unix Machine information 1GB = 1000,000',
+                    vAxis: {title: 'Memory'},
+                    hAxis: {title: 'Machine', slantedText: false, /* Enable slantedText for horizontal axis */
+                        slantedTextAngle: 0 /* Define slant Angle */, minTextSpacing:1},
+                    seriesType: 'bars',
+                    // Allow multiple
+                    // simultaneous selections.
+                    selectionMode: 'multiple',
+                    // Trigger tooltips
+                    // on selections.
+                    tooltip: {trigger: 'selection'},
+                    // Group selections
+                    // by x-value.
+//                    aggregationTarget: 'category',
+//                    series: {5: {type: 'line'}}
+                };
+
+                var chart = new google.visualization.ComboChart(document.getElementById('combochart_div'));
+                chart.draw(data, options);
+            }
+
+
+            function drawDonutChart() {
+                var data = google.visualization.arrayToDataTable(dataPop);
+
+                var options = {
+                    title: 'World Population Donut chart',
+                    pieHole: 0.4,
+//                    slices: {1: {offset: 0.2},
+//                        2: {offset: 0.3},
+//                        4: {offset: 0.4},
+//                        7: {offset: 0.5},
+//                    },
+                };
+
+                var chart = new google.visualization.PieChart(document.getElementById('donutchart_div'));
+                chart.draw(data, options);
+            }
+
+            function draw3dChart() {
+                var data = google.visualization.arrayToDataTable(dataPop);
+
+                var options = {
+                    title: 'World Population 3d chart',
+                    is3D: true,
+//                    slices: {1: {offset: 0.2},
+//                        2: {offset: 0.3},
+//                        4: {offset: 0.4},
+//                        7: {offset: 0.5},
+//                    },
+                };
+
+                var chart = new google.visualization.PieChart(document.getElementById('3dchart_div'));
+                chart.draw(data, options);
+            }
+
+        </script>
+    </head>
+
+    <body >
+        <!-- Navigation -->
+
+        <div class="intro-header">
+            <!--Div that will hold the pie chart-->
+            <div class="container" style="text-align: center">
+
+                <div >
+                    <h1>Dashboard charts</h1>
+                    <p class="lead">With MasterDataNode you don't require server<br> A standalone html page with CSS and JS, suffice to build Chart application</p>
+                </div>
+                <div >
+                    <button class="btn btn-info">Click Button to create charts</button>
+                    <a href="https://github.com/MasterDataNode/HTMLExample/blob/master/charts.html" target="blank" > <button class="btn btn-info">See Code</button> </a>
+                </div>
+
+
+                <div class="col-lg-12">
+
+                    <div id="combochart_div" ></div>
+
+                </div>
+
+
+
+
+            </div>
+        </div>
+    </body>
+</html>
