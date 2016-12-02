@@ -1,2 +1,2 @@
 # surveyonhtml
-Create beautiful survay on HTML and Javascript on top of masterdatanode
+Create beautiful survey on HTML and Javascript on top of masterdatanode
