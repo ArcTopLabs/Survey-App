@@ -2,7 +2,6 @@
 <html>
     <head>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-        <script src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
         <!-- Latest compiled and minified CSS -->
         <link rel="stylesheet" href="css/bootstrap.min.css" crossorigin="anonymous">
 
@@ -23,46 +22,19 @@
 		
             $(document).ready(function () {
 			
+			var name = "";
+			var surveyres = "";
+			var survedata;
+			var SendInfo = {"limit": 4, "sort": {"created_date": "desc"}};
+                        var dataString = JSON.stringify(SendInfo);
 			
-			
-			    	
-		Survey.Survey.cssType = "bootstrap";
-var survey = new Survey.Survey(
-{pages:[{name:"page1",questions:[{type:"radiogroup",name:"frameworkUsing",title:"Do you use any front-end framework like Bootstrap?",isRequired:true,choices:["Yes","No"]},{type:"checkbox",name:"framework",visible:false,title:"What front-end framework do you use?",isRequired:true,hasOther:true,choices:["Bootstrap","Foundation"]}]},{name:"page2",questions:[{type:"radiogroup",name:"mvvmUsing",title:"Do you use any MVVM framework?",isRequired:true,choices:["Yes","No"]},{type:"checkbox",name:"mvvm",visible:false,title:"What MVVM framework do you use?",isRequired:true,hasOther:true,choices:["AngularJS","KnockoutJS","React"]}]},{name:"page3",questions:[{type:"comment",name:"about",title:"Please tell us about your main requirements for Survey library"}]}],title:"Tell us, what technologies do you use?",triggers:[{type:"visible",operator:"equal",value:"Yes",name:"frameworkUsing",questions:["framework"]},{type:"visible",operator:"equal",value:"Yes",name:"mvvmUsing",questions:["mvvm"]}]});
-survey.onComplete.add(function (s) {
-alert("The results are:" + JSON.stringify(s.data));
- });
-survey.render("mySurveyJSName");
-			
-			
-			
-                var mytable = $('#example').DataTable({
-                    "paging": true,
-                    "lengthChange": false,
-                    "searching": false,
-                    "ordering": false,
-                    "info": true,
-                    "autoWidth": false,
-                    "sDom": 'lfrtip'
-                });
-                $("button").click(function () {
-
-                var SendInfo = {"sort": {"created_date": "desc"}};
-                    var dataString = JSON.stringify(SendInfo);
-
-                    var SendInfo = { "sort": {
-                            "name": "desc"
-                        }};
-                    mytable.clear();
-                    mytable.draw();
-//                    alert("canvas clear");
-                    $.ajax({
-                        url: 'http://api.masterdatanode.com/unix/memory/find/',
+			 $.ajax({
+                        url: 'http://api.masterdatanode.com/sample/survey/find/',
                         type: 'post',
 //                        data: {},
                        data: dataString,
                         headers: {
-                            "access_token": 'Zs0nTQB-ujOSV0KmEoPhBx2E6-Ab_GKO',
+                            "access_token": 'Zs0nTQB-ujOSV0KmEoPhBx2E6-Ab_GKO',   //####Access_Token########
                             "Content-Type": 'application/json'
                         },
                         dataType: 'json',
@@ -87,38 +59,57 @@ survey.render("mySurveyJSName");
                                 //display the key and value pair
                                 //alert(k + ' is ' + jsonObject);
 
-                                var result12 = [];
-                                result12.push(jsonObject.machine);
-                                result12.push(jsonObject.used_per);
-                                result12.push(jsonObject.total);
-                                result12.push(jsonObject.used);
-                                result12.push(jsonObject.available);
-                                result12.push(jsonObject.created_date);
-
-
+                               
+                                name = jsonObject.name;
+                                surveyres = jsonObject.survey;
+								survedata = surveyres.replace(/\n/g, '')
+                               var test = 'this\nis\na\ntest\nwith\newlines';
+								console.log(surveyres.replace(/\n/g, ''));	
                                 // .... add all the values required
-                                console.info(result12);
+                                console.info(survedata);
 
-
+	
 
                                 //var jsdata = JSON.parse(v);
 
-                                mytable.row.add(result12);
+                              
 
 
                             });
 
-                            mytable.draw();
+                           
                             //mytable.draw();
-                            console.info(JSON.stringify(obj.result));
+                            console.info('-------------- ' +survedata);
+								console.log("HELLO");
+								setTimeout(function(){
+								
+									var json = JSON.stringify(eval("(" + survedata + ")"));
+									console.log(json);
+									//alert(survedata);
+									
+									Survey.Survey.cssType = "bootstrap";
+									var survey = new Survey.Survey( json, "surveyContainer");
+									//Use onComplete event to save the data
+									//survey.onComplete.add(sendDataToServer);
+									
+									
+								}, 3000);
+								console.log("DOG");
 
-
-
+							
 
 
                         }
                     });
-                });
+			
+			
+			
+			    	
+
+			
+			
+			
+               
             });
         </script>
     </head>
@@ -140,7 +131,7 @@ survey.render("mySurveyJSName");
 		
 		 <div class="container " style="text-align: left;">
 		 
-		 <div id= "mySurveyJSName" style="display:block" class="col-lg-12" style="text-align: left;"></div>
+		 <div id="surveyContainer"></div>
 		 </div>
 		
 		
