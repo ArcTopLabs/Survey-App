@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+		
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/1000hz-bootstrap-validator/0.11.5/validator.min.js"></script>
+         <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="css/bootstrap.min.css" crossorigin="anonymous">
+
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="css/bootstrap-theme.min.css" crossorigin="anonymous">
+
+        <link href="css/starter-template.css" rel="stylesheet">
+
+
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="js/bootstrap.min.js" crossorigin="anonymous"></script>
+        <script>
+            $(document).ready(function(){
+			
+			
+			
+            $("button").click(function(){
+			var name = document.getElementById("name").value;
+			//var latitude = document.getElementById("latitude").value;
+			var survey = document.getElementById("survey").value;
+			
+			//alert(name); 
+                var SendInfo= { "Data" : [{ "name": name, "survey": survey}]};
+            //alert(JSON.stringify(SendInfo)); 
+			console.info(JSON.stringify(SendInfo));	
+			// Store
+//localStorage.setItem("lastname", "Smith");
+// Retrieve
+//alert(localStorage.getItem("lastname")); 
+			//console.info(localStorage.getItem("lastname"));	
+
+			if(name == null){
+				alert("Please enter name");
+			}else{
+				 $.ajax({
+						url: 'https://api.masterdatanode.com/sample/survey/save',
+						type: 'post',
+						data: JSON.stringify(SendInfo),
+						headers: {
+						"access_token": 'Zs0nTQB-ujOSV0KmEoPhBx2E6-Ab_GKO',
+								"Content-Type":  	'application/json'
+								
+						},
+						dataType: 'json',
+						success: function (data) {
+						console.info(JSON.stringify(data));
+							 $("#test_div").html( JSON.stringify(data) );
+						}
+					});
+			}
+			
+            
+            });
+     });
+        </script>
+		
+		<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-form-validator/2.3.26/jquery.form-validator.min.js"></script>
+		<script>
+		  $.validate({
+			lang: 'es'
+		  });
+		</script>
+    </head>
+    <body>
+
+
+			
+				<div class="container">
+			<div class="row main">
+				<div class="panel-heading">
+	               <div class="panel-title text-center">
+	               		<h1 class="title">Survey Creation</h1>
+	               		
+	               	</div>
+	            </div> 
+				<div class="main-login main-center">
+					<form role="form" class="form-horizontal" data-toggle="validator" method="post" action="#">
+						
+						<div class="form-group">
+							<label for="name" class="cols-sm-2 control-label">machine Name</label>
+							<div class="cols-sm-10">
+								<div class="input-group">
+									<span class="input-group-addon"><i class="fa fa-user fa" aria-hidden="true"></i></span>
+									<input type="text" class="form-control" name="name" id="name"  placeholder="Enter your Name" required="" />
+									<div class="help-block with-errors"></div>
+								</div>
+							</div>
+						</div>
+					
+
+						<div class="form-group">
+							<label for="username" class="cols-sm-2 control-label">Survey data</label>
+							<div class="cols-sm-10">
+								<div class="input-group">
+									<span class="input-group-addon"><i class="fa fa-users fa" aria-hidden="true"></i></span>
+									<textarea rows="5"  class="form-control" name="survey" id="survey"  placeholder="Enter your survey json data"></textarea>
+								</div>
+							</div>
+						</div>
+
+						
+
+						<div class="form-group ">
+							<button type="button" class="btn btn-primary btn-lg btn-block login-button">Create Survey</button>
+						</div>
+						
+					</form>
+				</div>
+			</div>
+		</div>
+          
+           
+
+        
+         <div id="test_div" class="col-lg-8">
+
+
+            </div>
+
+    </body>
+</html>
