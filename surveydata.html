@@ -25,8 +25,10 @@
 			var name = "";
 			var surveyres = "";
 			var survedata;
-			var SendInfo = {"limit": 4, "sort": {"created_date": "desc"}};
+			var surveyid;
+			var SendInfo = { "filter" : { "name" : "sample1"},  "limit": 4, "sort": {"created_date": "desc"}};
                         var dataString = JSON.stringify(SendInfo);
+			
 			
 			 $.ajax({
                         url: 'http://api.masterdatanode.com/sample/survey/find/',
@@ -34,7 +36,7 @@
 //                        data: {},
                        data: dataString,
                         headers: {
-                            "access_token": 'Zs0nTQB-ujOSV0KmEoPhBx2E6-Ab_GKO',   //####Access_Token########
+                            "access_token": '##############access_token#####################'   //####Access_Token########
                             "Content-Type": 'application/json'
                         },
                         dataType: 'json',
@@ -45,35 +47,18 @@
                             //$("#test_div").html(JSON.stringify(data));
                             $("#test_div").show();
                             var obj = JSON.parse(JSON.stringify(data));
-                            /* for(var i = 0; i < obj.result.length; i++) {
-                             var obj1 = data[i];
-                             
-                             console.log(obj1.id);
-                             } */
                             //var mytable =  $('#example').DataTable();
                             var result = $.parseJSON(JSON.stringify(obj.result));
-
-
+							
 
                             $.each(result, function (k, jsonObject) {
-                                //display the key and value pair
-                                //alert(k + ' is ' + jsonObject);
-
-                               
                                 name = jsonObject.name;
                                 surveyres = jsonObject.survey;
+								surveyid = k;
 								survedata = surveyres.replace(/\n/g, '')
-                               var test = 'this\nis\na\ntest\nwith\newlines';
-								console.log(surveyres.replace(/\n/g, ''));	
+                                console.log(surveyres.replace(/\n/g, ''));	
                                 // .... add all the values required
                                 console.info(survedata);
-
-	
-
-                                //var jsdata = JSON.parse(v);
-
-                              
-
 
                             });
 
@@ -83,7 +68,7 @@
 								console.log("HELLO");
 								setTimeout(function(){
 								
-									var json = JSON.stringify(eval("(" + survedata + ")"));
+									var json = JSON.parse(survedata);
 									console.log(json);
 									//alert(survedata);
 									
@@ -91,9 +76,28 @@
 									var survey = new Survey.Survey( json, "surveyContainer");
 									//Use onComplete event to save the data
 									//survey.onComplete.add(sendDataToServer);
+									survey.onComplete.add(function (s) {
+									    var SendInfo= { "Data" : [{ "id": surveyid, "name": name, "surveyresult": s.data}]};
+										alert("The results are:" + JSON.stringify(s.data));
+										$.ajax({
+											url: 'https://api.masterdatanode.com/sample/surveyresult/save',
+											type: 'post',
+											data: JSON.stringify(SendInfo),
+											headers: {
+											"access_token": '##############access_token#####################',
+													"Content-Type":  	'application/json'
+													
+											},
+											dataType: 'json',
+											success: function (data) {
+											console.info(JSON.stringify(data));
+												 $("#test_div").html( "Your data is been successfully recorded with us" );
+											}
+										});
+										
+									 });
 									
-									
-								}, 3000);
+								}, 2000);
 								console.log("DOG");
 
 							
@@ -124,6 +128,7 @@
             <div >
                 User Survey Editor to get your suvey ready <a href="http://surveyjs.org/builder/" > Click Here </a>
             </div>
+			
           
 
         </div>
@@ -132,6 +137,7 @@
 		 <div class="container " style="text-align: left;">
 		 
 		 <div id="surveyContainer"></div>
+		 <div id="test_div" ></div>
 		 </div>
 		
 		
