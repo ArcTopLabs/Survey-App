@@ -19,7 +19,7 @@
             $(document).ready(function(){
 			
 			
-			
+			//Note change the Option in Servery Editor to valid JSON
             $("button").click(function(){
 			var name = document.getElementById("name").value;
 			//var latitude = document.getElementById("latitude").value;
@@ -43,7 +43,7 @@
 						type: 'post',
 						data: JSON.stringify(SendInfo),
 						headers: {
-						"access_token": 'Zs0nTQB-ujOSV0KmEoPhBx2E6-Ab_GKO',
+						"access_token": '##############access_token#####################'
 								"Content-Type":  	'application/json'
 								
 						},
@@ -76,7 +76,9 @@
 				<div class="panel-heading">
 	               <div class="panel-title text-center">
 	               		<h1 class="title">Survey Creation</h1>
-	               		
+	               		 <div >
+                Note : Change Survey Editor option to Valid JSON
+            </div>
 	               	</div>
 	            </div> 
 				<div class="main-login main-center">
