@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Survey Result</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+        <link rel="stylesheet" href="https://pingendo.com/assets/bootstrap/bootstrap-4.0.0-beta.1.css" type="text/css"> 
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+        <script src="js/arctoplabs.js"></script>
+
+    </head>
+    <body>
+        <div id="s_testimonial1" class="py-5 text-center pi-draggable bg-light" draggable="true">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h1>Survey Result </h1>
+                        <p class="lead">Survey Data solution build on top of ArcTop Labs #DataSolution #MasterDataNode EcoSystem</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 p-6">
+                        <canvas id="myChart" width="100" height="60"></canvas>
+                    </div>
+                    <div class="col-md-6 p-6">
+                        <canvas id="chart-area" />
+                    </div>
+
+                </div>
+
+
+                <div class="row">
+                    <div class="col-md-6 p-6">
+                        <h3>Top 5 Positive Review </h3>
+                        <div class="row" id="positive">
+                        </div>
+                    </div>
+                    <div class="col-md-6 p-6">
+                        <h3>Top 5 Negative Review </h3>
+                        <div class="row" id="negative"></div>
+                    </div>
+
+                </div>
+
+
+            </div>
+        </div>
+
+        <div></div>
+
+        <script>
+            html5survey.voteResult();
+            html5survey.reviewPositive();
+            html5survey.reviewNegative();
+//            setTimeout(function () {
+//                window.location.reload(1);
+//            }, 10000);
+        </script>
+    </body>
+</html>
