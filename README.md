@@ -18,4 +18,5 @@ ArcTop Labs : MasterDataNode Data Solution
 <p>Create an App after login, copy and paste App Name in arctoplabs.js, index.js file appName variable</p>
 <p>Copy and Replace the access_token (available in your login) in arctoplabs.js, index.js file access_token variable</p>
             
-
+![alt text](https://github.com/ArcTopLabs/Survey-App/blob/master/screenshot/Survey%20App%20using%20MasterDataNode%2C%20jQuery%2C%20SurveyJS%20Library%20Example.png)
+![alt text](https://github.com/ArcTopLabs/Survey-App/blob/master/screenshot/Survey%20Result.png)
